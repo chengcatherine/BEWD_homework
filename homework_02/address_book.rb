@@ -28,12 +28,21 @@ def create
 end
 
 def view
-	puts "view choice"
+	puts "Address Book"
 
 end
 
+# user specifies index of the entry they would like to delete
 def delete
-	puts "delete"
+	view()
+	puts "Which entry would you like to delete?"
+	delete_entry = gets
+	if delete_entry <= address_book.size - 1
+		return delete_entry
+	else
+		puts "Stop it! Make sure you enter a valid entry number to delete."
+		delete()
+	end
 end
 
 def quit
@@ -59,10 +68,13 @@ elsif choice == view
 	address_book.each_with_index do |entry, index|
 		puts "#{index} entry.fetch(:last_name), entry.fetch(:first_name)"
 	end
+	# menu()
 elsif choice == delete
-	delete()
+	address_book.delete(delete())
+	# menu()
 elsif choice == quit
 	quit()
+	# menu()
 else
 	puts "So silly! That's not an option!"
 	menu()
