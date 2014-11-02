@@ -10,6 +10,14 @@ while (status)
   print "Maximum: "
   max = gets.to_i
 
+  # Hmm... so, you detect that the user entered the
+  # range out of order, but then they are never asked
+  # to fix the values.  This will cause rand(min...max)
+  # to return  nil  later on.
+  #
+  # Based upon what you know now, how would you force the
+  # user to keep entering values until they choose values
+  # that are in the correct order?
   if (min >= max)
     puts "Stop goofing around!"
   end
@@ -26,6 +34,15 @@ while (status)
     guess = Integer(gets)
     if (guess == number)
       puts "NAILED IT!!!"
+
+      # If the user guesses the correct value, then the program
+      # will exit.  That is, they are not given the option to
+      # play again.  Instead of using an 'exit' statement here,
+      # consider:
+      #
+      #  1. Placing the 'changes.times' loop into a separate method
+      #  2. Using a 'return' statement to exit the method (rather
+      #     then using an 'exit' statement to exit the program)
       exit
     elsif (guess < number)
       puts "Too Low!"
@@ -34,7 +51,11 @@ while (status)
     end
   end
   print "You lose! I win! Womp womp!\nWant to play again?\nyes or no\n"
+
+  # Oops!  It looks like you forgot to call '.chomp()' to remove
+  # the newline character from the end of the user's input.
   response = gets
+  
   puts response.is_a?(String)
   if (response == "no")
     puts "Aw, shucks.."
