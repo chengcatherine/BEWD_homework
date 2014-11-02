@@ -76,6 +76,9 @@ end
 
 # function to create a json file from the address_book
 def create_json_file(filename, addressbook)
+  # Perfect!  Using the block form of File.open ensures
+  # that the file is closed properly once you are finished
+  # writing to it.
 	file = File.open(filename, "w") do |f|
 	f.write(addressbook.to_json)
 	end
@@ -111,6 +114,19 @@ end
 
 
 create_json_file("address_book.json", address_book)
+
+### Looks good, but this should probably be called at
+### the beginning of the code rather than just before
+### the application exits.  I'm guessing that you were
+### unsure about how to handle the Exception that could
+### occur when the user had not created an address book
+### file yet.  Perhaps something like this?
+###
+###   begin
+###     address_book = load_book_from_json('address_book.json')
+###   rescue  Errno::ENOENT   # File not found error
+###     address_book = []
+###   end
 load_book_from_json('address_book.json')
 
 exit
