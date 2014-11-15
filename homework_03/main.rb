@@ -13,6 +13,17 @@ def menu
 	return gets.strip.to_i
 end
 
+def ask_delete
+	puts "Do you want to delete these entries? (Y/N)"
+	response = gets.strip
+	return response
+end
+
+def delete_entry(entries)
+	entries.each do |e|
+		e.destroy
+	end
+end
 
 # creates an email entry for a particular address entry
 def email
@@ -102,14 +113,17 @@ def search_first_name
 		@emails.each do |e|
 			puts e.address + "\t\t#{e.category}"
 		end
-		puts
 		@phone_nums = c.phone_numbers
 		puts "Phone Numbers: "
 		@phone_nums.each do |p|
 			puts p.digits + "\t\t#{p.category}"
 		end
+		puts
 	end
 	puts
+	if ask_delete == "Y"
+		delete_entry(@results)
+	end
 end
 
 
@@ -133,18 +147,42 @@ def search_last_name
 		@emails.each do |e|
 			puts e.address + "\t\t#{e.category}"
 		end
-		puts
 		@phone_nums = c.phone_numbers
 		puts "Phone Numbers: "
 		@phone_nums.each do |p|
 			puts p.digits + "\t\t#{p.category}"
 		end
+		puts
 	end
 	puts
+	if ask_delete == "Y"
+		delete_entry(@results)
+	end
 end
 
 def search_email
+	puts "Searching for entries by email."
+	puts "Search: "
+	search_string = gets.strip
+	puts
 
+	@results = EmailAddress.where(
+		address: search_string
+	)
+	puts "Found #{@results.size()} matches!"
+	@results.each do |e| 
+		a = AddressEntry.find(e.address_entry_id)
+		puts "First name:\t\t#{a.first_name}"
+		puts "Last name:\t\t#{a.last_name}"
+		e.address
+		@phone_nums = a.phone_numbers
+		puts "Phone Numbers: "
+		@phone_nums.each do |p|
+			puts p.digits + "\t\t#{p.category}"
+		end
+		puts
+	end
+	puts
 end
 
 
